@@ -19,3 +19,21 @@ services:
         reservations:
           cpus: "1"
           memory: 0.5G
+  qdrant:
+    image: qdrant/qdrant:v1.17.1
+    container_name: qdrant_vector_db
+    restart: always
+    ports:
+      - "6333:6333" # API REST y Web Dashboard
+      - "6334:6334" # gRPC (por si lo necesitas más adelante)
+    environment:
+      - QDRANT__SERVICE__ENABLE_PROFILING=true
+    volumes:
+      - ./.qdrant_data:/qdrant/storage:z
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50" # Máximo 50% de un núcleo de CPU
+          memory: 512M # Máximo 512MB de RAM (ideal para tus colecciones de testing)
+        reservations:
+          memory: 128M # Garantiza al menos 128MB
