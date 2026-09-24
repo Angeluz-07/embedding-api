@@ -1,0 +1,21 @@
+services:
+  embedding_api:
+    image: angeluz07/embedding-api:0.0.1 # use local if exists
+    build:
+      context: .
+    container_name: embedding_api
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src:/app/src:z
+    command: ["fastapi", "dev", "src/main.py", "--host", "0.0.0.0", "--port", "8001", "--reload"]
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 1.5G
+        reservations:
+          cpus: "1"
+          memory: 0.5G
